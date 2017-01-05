@@ -36,16 +36,18 @@ angular.module('myApp', [])
 
 .config([ '$provide', function($provide) {
 
-  $provide.decorator('$log', [
+  $provide.decorator('myService', [
     '$delegate',
-    function $logDecorator($delegate) {
+    function myServiceDecorator($delegate) {
 
-      var originalWarn = $delegate.warn;
-      $delegate.warn = function decoratedWarn(msg) {
-        msg = 'Decorated Warn: ' + msg;
-        originalWarn.apply($delegate, arguments);
-      };
+      var someFn = $delegate.someFn;
 
+      function aNewFn() {
+        // new service function
+        return someFn.apply($delegate, arguments);
+      }
+
+      $delegate.someFn = aNewFn;
       return $delegate;
     }
   ]);
